@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(DisplayAdapterDetect)
+project(WindowsOnSnapdragonDetect)
 
 set(CMAKE_CXX_STANDARD 20)
 

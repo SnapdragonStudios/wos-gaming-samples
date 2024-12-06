@@ -14,10 +14,10 @@
 // Target processor architecture for build
 enum class BuildArchitecture { X86, X64, ARM64, ARM64EC, Unknown };
 
-// Get build architecture for this build
+// Get build architecture
 constexpr BuildArchitecture gBuildArchitecture =
 // Microsoft-specific predefined macros
-#if defined(_X86_)
+#if defined(_M_IX86)
 BuildArchitecture::X86
 #elif defined(_M_ARM64)
 BuildArchitecture::ARM64
@@ -30,19 +30,17 @@ BuildArchitecture::Unknown
 #endif
 ;
 
-int main()
-{
+int main() {
     // Check for valid build architecture
-    if (gBuildArchitecture == BuildArchitecture::Unknown)
-    {
+    if constexpr (gBuildArchitecture == BuildArchitecture::Unknown) {
         std::cout << "Could not determine build architecture\n";
         return 0;
     }
 
     // Get native architecture of the system
     USHORT process, nativeMachineArchitecture;
-    BOOL success = IsWow64Process2(GetCurrentProcess(), &process, &nativeMachineArchitecture);
-    if (success == FALSE) {
+    const BOOL bSuccess = IsWow64Process2(GetCurrentProcess(), &process, &nativeMachineArchitecture);
+    if (bSuccess == FALSE) {
         std::cout << std::format("Error: IsWow64Process2() failed, GetLastError() {:x}\n", GetLastError());
         return 0;
     }
@@ -54,7 +52,7 @@ int main()
     const bool bEmulation = bWindowsOnSnapdragon && (
         gBuildArchitecture == BuildArchitecture::X64 ||
         gBuildArchitecture == BuildArchitecture::X86 ||
-        gBuildArchitecture == BuildArchitecture::ARM64EC );
+        gBuildArchitecture == BuildArchitecture::ARM64EC);
 
     std::cout << std::format("Windows on Snapdragon: {}\nEmulation: {}\n", bWindowsOnSnapdragon, bEmulation);
 

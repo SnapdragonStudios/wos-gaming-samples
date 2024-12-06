@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(${PROJECT_NAME} DisplayAdapterDetect.cpp)
 
+target_link_libraries(${PROJECT_NAME} "DXGI.lib")
+
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # Cmake 3.20 - 3.30 conflicting preprocessor defines. Fixed in Cmake 3.31.0
